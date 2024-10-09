@@ -10,8 +10,22 @@ import {
   CssBaseline,
 } from "@mui/material";
 
-// Import logo
-const Musiclogo = "https://qwestore.com/png_images_min/10/Download-Free-Graphic-Resources-for-bMusic-5482.png"; // Replace with actual path
+const blackOrangeTheme = {
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#ff8c00', // Orange for primary buttons
+    },
+    background: {
+      default: "#000000", // Black background
+      paper: "#1e1e1e",   // Darker grey for register box
+    },
+    text: {
+      primary: "#ffffff",  
+      secondary: "#ff8c00", // Orange text for emphasis
+    },
+  },
+};
 
 export default function RegisterPage() {
   const [registerEmail, setRegisterEmail] = useState("");
@@ -20,7 +34,7 @@ export default function RegisterPage() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
 
   // Handle closing snackbar
   const handleSnackbarClose = () => {
@@ -30,14 +44,12 @@ export default function RegisterPage() {
   // Handle form submission
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading state to true
+    setLoading(true); 
     try {
-      // Check if passwords match
       if (registerPassword !== confirmPassword) {
         throw new Error("Passwords do not match");
       }
 
-      // Send request to backend API to register the user
       const response = await fetch("/api/users/create", {
         method: "POST",
         headers: {
@@ -45,35 +57,32 @@ export default function RegisterPage() {
         },
         body: JSON.stringify({
           email: registerEmail,
-          password: registerPassword, // Send password to the backend
+          password: registerPassword,
         }),
       });
 
-      // Handle response
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.detail || "Registration failed");
       }
 
-      const data = await response.json(); // Assuming the response contains success message or user details
-      setSnackbarMessage(data.message || "Registration successful!"); // Make sure to access the right property, e.g., `message`
+      const data = await response.json();
+      setSnackbarMessage("Registration successful!");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
 
-      // Redirect to login page after successful registration
       window.location.href = "/login"; 
 
     } catch (error) {
-      setSnackbarMessage(error.message); // Access `error.message` properly
+      setSnackbarMessage(error.message);
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
 
-      // Clear the input fields if registration fails
       setRegisterEmail("");
       setRegisterPassword("");
       setConfirmPassword("");
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -84,44 +93,40 @@ export default function RegisterPage() {
         container
         spacing={2}
         style={{
-          height: "100vh",   // Ensures full viewport height
-          width: "100vw",    // Ensures full viewport width
+          height: "100vh",
+          width: "100vw",
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#bbbbbb", // Background color
-          position: "relative",
-          overflow: "hidden", // Prevents content overflow
-          margin: 0,         // Ensure no extra margin
-          padding: 0,        // Ensure no extra padding
+          backgroundColor: "#000000", // Black background
+          margin: 0,
+          padding: 0,
+          flexDirection: "column", // Ensure everything is stacked vertically
         }}
       >
-        {/* Logo at the top center */}
-        <img
-          src={Musiclogo}
-          alt="Musiclogo"
-          style={{
-            position: "absolute",
-            top: "60px", // Adjusted to be lower
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "200px", // Adjust the size as needed
-            zIndex: 1, // Ensure it is above the register box
+        {/* Title in the middle */}
+        <Typography 
+          variant="h3" 
+          sx={{ 
+            color: '#ff8c00', 
+            textAlign: 'center', 
+            marginBottom: 2 
           }}
-        />
+        >
+          MusicHUB
+        </Typography>
 
-        <Grid item xs={12} sm={4}> {/* Reduced width from 6 to 4 */}
+        {/* Register Box */}
+        <Grid item xs={12} sm={4}>
           <Paper
             elevation={4}
             style={{
               padding: "20px",
-              backgroundColor: "#3f3f3f", // Black register box
+              backgroundColor: "#1e1e1e", // Dark grey register box
               borderRadius: "8px",
-              width: '100%', // Ensure full width of the grid item
-              position: 'relative', // Positioned element for overlapping
-              zIndex: 0, // Ensure it is below the logo
+              marginBottom: "20px", // Add space between register box and Back button
             }}
           >
-            <Typography variant="h5" gutterBottom style={{ color: "#fff" }}>
+            <Typography variant="h5" gutterBottom style={{ color: "#ff8c00" }}>
               Register
             </Typography>
             <form onSubmit={handleRegisterSubmit}>
@@ -133,8 +138,8 @@ export default function RegisterPage() {
                 type="email"
                 value={registerEmail}
                 onChange={(e) => setRegisterEmail(e.target.value)}
-                InputLabelProps={{ style: { color: '#fff' } }} // White label
-                InputProps={{ style: { color: '#fff', backgroundColor: '#555' } }} // Grey input field
+                InputLabelProps={{ style: { color: '#ff8c00' } }} // Orange label
+                InputProps={{ style: { color: '#ffffff', backgroundColor: '#555' } }} // Dark grey input field
               />
               <TextField
                 fullWidth
@@ -144,8 +149,8 @@ export default function RegisterPage() {
                 type="password"
                 value={registerPassword}
                 onChange={(e) => setRegisterPassword(e.target.value)}
-                InputLabelProps={{ style: { color: '#fff' } }} // White label
-                InputProps={{ style: { color: '#fff', backgroundColor: '#555' } }} // Grey input field
+                InputLabelProps={{ style: { color: '#ff8c00' } }} // Orange label
+                InputProps={{ style: { color: '#ffffff', backgroundColor: '#555' } }} // Dark grey input field
               />
               <TextField
                 fullWidth
@@ -155,57 +160,60 @@ export default function RegisterPage() {
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                InputLabelProps={{ style: { color: '#fff' } }} // White label
-                InputProps={{ style: { color: '#fff', backgroundColor: '#555' } }} // Grey input field
+                InputLabelProps={{ style: { color: '#ff8c00' } }} // Orange label
+                InputProps={{ style: { color: '#ffffff', backgroundColor: '#555' } }} // Dark grey input field
               />
               <Button
                 variant="contained"
                 color="primary"
                 fullWidth
-                style={{ marginTop: "16px" }}
+                sx={{ 
+                  marginTop: "16px", 
+                  backgroundColor: '#ff8c00', 
+                  color: '#ffffff' 
+                }}
                 type="submit"
-                disabled={loading} // Disable button when loading
+                disabled={loading}
               >
                 {loading ? "Registering..." : "Register"}
               </Button>
             </form>
           </Paper>
 
-          {/* Already a member text with button underneath */}
-          <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '16px', color: '#000000' }}>
-            <Typography variant="body2" style={{ marginRight: '8px' }}>
+          {/* Already a member link */}
+          <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '16px' }}>
+            <Typography variant="body2" style={{ color: '#ffffff', marginRight: '8px' }}>
               Already have an account?
             </Typography>
             <Button
               variant="contained"
-              color="primary"
               href="/login"
-              style={{ backgroundColor: '#2196F3', padding: '6px 12px' }} // Adjusted padding for button
+              sx={{ backgroundColor: '#ff8c00', color: '#ffffff' }}
             >
               Login
             </Button>
           </Grid>
         </Grid>
 
-        {/* Music logo at the bottom right */}
-        <img
-          src={Musiclogo}
-          alt="Musiclogo"
-          style={{
-            position: "absolute",
-            bottom: "50px",
-            right: "50px", // Positioned to bottom right
-            width: "150px", // Adjust the size as needed
-            zIndex: 1, // Ensure it is above the background
+        {/* Back to Main Page Button */}
+        <Button
+          variant="contained"
+          href="/mainpage"
+          sx={{ 
+            backgroundColor: '#ff8c00', 
+            color: '#ffffff', 
+            marginTop: 4 // Adds space at the bottom
           }}
-        />
+        >
+          Back to Main Page
+        </Button>
 
         {/* Snackbar for feedback messages */}
         <Snackbar 
           open={openSnackbar} 
           autoHideDuration={6000} 
           onClose={handleSnackbarClose} 
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Top center
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
           <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
             {snackbarMessage}

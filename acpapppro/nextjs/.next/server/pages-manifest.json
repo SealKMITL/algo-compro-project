@@ -1,0 +1,10 @@
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/removesong": "pages/removesong.js",
+  "/mainpage": "pages/mainpage.js",
+  "/addsong": "pages/addsong.js",
+  "/login": "pages/login.js",
+  "/findsong": "pages/findsong.js"
+}

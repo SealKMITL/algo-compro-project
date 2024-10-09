@@ -10,16 +10,13 @@ import {
   CssBaseline,
 } from "@mui/material";
 
-// Import logos (make sure to use direct links to image files)
-const Musiclogo = "https://qwestore.com/png_images_min/10/Download-Free-Graphic-Resources-for-bMusic-5482.png"; // Replace with actual path
-
 export default function LoginPage() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
@@ -27,7 +24,7 @@ export default function LoginPage() {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true
+    setLoading(true);
     try {
       const response = await fetch("/api/users/login", {
         method: "POST",
@@ -49,67 +46,62 @@ export default function LoginPage() {
       setSnackbarMessage("Login successful!");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
-      
-      // Navigate to page1 after successful login
-      window.location.href = "/Mainpage"; // Change to your desired page
+
+      window.location.href = "/Mainpage"; // Navigate to main page after successful login
 
     } catch (error) {
       setSnackbarMessage(error.message);
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
-      setLoginEmail(""); // Clear the email input
-      setLoginPassword(""); // Clear the password input
+      setLoginEmail(""); // Clear inputs
+      setLoginPassword("");
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
   return (
     <>
-      {/* CssBaseline removes default margins/paddings */}
       <CssBaseline />
       <Grid
         container
         spacing={2}
         style={{
-          height: "100vh",   // Ensures the grid takes full viewport height
-          width: "100vw",    // Ensures the grid takes full viewport width
+          height: "100vh",
+          width: "100vw",
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#bbbbbb", // Background color
+          backgroundColor: "#121212", // Black background
           position: "relative",
-          overflow: "hidden", // Prevents content overflow
-          margin: 0,         // Ensure no extra margin
-          padding: 0,        // Ensure no extra padding
+          overflow: "hidden",
+          margin: 0,
+          padding: 0,
         }}
       >
-        {/* Logo at the top center */}
-        <img
-          src={Musiclogo}
-          alt="Musiclogo"
-          style={{
-            position: "absolute",
-            top: "60px", // Adjusted to be lower
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "200px", // Adjust the size as needed
-            zIndex: 1, // Ensure it is above the login box
+        {/* Title at the top, lowered and centered */}
+        <Typography 
+          variant="h3" 
+          align="center" 
+          sx={{ 
+            color: '#ff8c00',  // Orange title
+            position: 'absolute', 
+            top: '120px',  // Lowered to give space
+            width: '100%' 
           }}
-        />
+        >
+          MUSICHUB
+        </Typography>
 
-        <Grid item xs={12} sm={4}> {/* Reduced width from 6 to 4 */}
+        <Grid item xs={12} sm={4}>
           <Paper
-            elevation={4}
+            elevation={6}
             style={{
-              padding: "20px",
-              backgroundColor: "#3f3f3f", // Black login box
+              padding: "30px",
+              backgroundColor: "#1e1e1e", // Darker black for the login box
               borderRadius: "8px",
-              width: '100%', // Ensure full width of the grid item
-              position: 'relative', // Positioned element for overlapping
-              zIndex: 0, // Ensure it is below the logo
             }}
           >
-            <Typography variant="h5" gutterBottom style={{ color: "#fff" }}>
+            <Typography variant="h5" gutterBottom style={{ color: "#ff8c00" }}>
               Login
             </Typography>
             <form onSubmit={handleLoginSubmit}>
@@ -121,8 +113,8 @@ export default function LoginPage() {
                 type="email"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
-                InputLabelProps={{ style: { color: '#fff' } }} // White label
-                InputProps={{ style: { color: '#fff', backgroundColor: '#555' } }} // Grey input field
+                InputLabelProps={{ style: { color: '#ff8c00' } }} // Orange label
+                InputProps={{ style: { color: '#ffffff', backgroundColor: '#333' } }} // Dark input field
               />
               <TextField
                 fullWidth
@@ -132,14 +124,14 @@ export default function LoginPage() {
                 type="password"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
-                InputLabelProps={{ style: { color: '#fff' } }} // White label
-                InputProps={{ style: { color: '#fff', backgroundColor: '#555' } }} // Grey input field
+                InputLabelProps={{ style: { color: '#ff8c00' } }} // Orange label
+                InputProps={{ style: { color: '#ffffff', backgroundColor: '#333' } }} // Dark input field
               />
               <Button
                 variant="contained"
                 color="primary"
                 fullWidth
-                style={{ marginTop: "16px" }}
+                style={{ marginTop: "16px", backgroundColor: '#ff8c00', color: '#ffffff' }}
                 type="submit"
                 disabled={loading} // Disable button when loading
               >
@@ -148,40 +140,38 @@ export default function LoginPage() {
             </form>
           </Paper>
 
-          {/* Register text with button underneath */}
-          <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '16px', color: '#000000' }}>
+          {/* Register link below login */}
+          <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '16px', color: '#ffffff' }}>
             <Typography variant="body2" style={{ marginRight: '8px' }}>
               Not a member?
             </Typography>
             <Button
               variant="contained"
-              color="primary"
               href="/register"
-              style={{ backgroundColor: '#2196F3', padding: '6px 12px' }} // Adjusted padding for button
+              style={{ backgroundColor: '#ff8c00', color: '#ffffff' }}
             >
               Register
             </Button>
           </Grid>
+
+          {/* Main Page button below the form */}
+          <Grid container justifyContent="center" alignItems="center" style={{ marginTop: '16px', color: '#ffffff' }}>
+            <Button
+              variant="contained"
+              href="/mainpage"
+              style={{ backgroundColor: '#ff8c00', color: '#ffffff', marginTop: '16px' }}
+            >
+              Go to Main Page
+            </Button>
+          </Grid>
         </Grid>
 
-        {/* Musiclogo at the bottom right */}
-        <img
-          src={Musiclogo}
-          alt="Musiclogo"
-          style={{
-            position: "absolute",
-            bottom: "50px",
-            right: "50px", // Changed to right
-            width: "150px", // Adjust the size as needed
-            zIndex: 1, // Ensure it is above the background
-          }}
-        />
-
+        {/* Snackbar for notifications */}
         <Snackbar 
           open={openSnackbar} 
           autoHideDuration={6000} 
           onClose={handleSnackbarClose} 
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Top center
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
         >
           <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
             {snackbarMessage}

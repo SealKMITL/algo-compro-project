@@ -1,19 +1,20 @@
-import { Box, Button, TextField, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, createTheme, ThemeProvider, CssBaseline, Select, InputLabel, FormControl } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, createTheme, ThemeProvider, CssBaseline, Select, InputLabel, FormControl, AppBar, Toolbar } from "@mui/material";
 import React, { useState } from "react";
 
-// Import the logo
-const Musiclogo = "https://qwestore.com/png_images_min/10/Download-Free-Graphic-Resources-for-bMusic-5482.png";
-
-// Dark theme like DarkModePage
+// Dark theme with black and orange
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: "#bbbbbb", // Light grey background like in the login page
-      paper: "#3f3f3f",   // Dark grey box color like in the login page
+      default: "#000000", // Black background
+      paper: "#1e1e1e",   // Dark grey box color for containers
+    },
+    primary: {
+      main: '#ff8c00', // Orange for primary accents (buttons, labels)
     },
     text: {
-      primary: "#ffffff",  
+      primary: "#ffffff",  // White text
+      secondary: "#ff8c00", // Orange text for emphasis
     },
   },
 });
@@ -41,19 +42,7 @@ const allowedGenres = [
   "Classic Rock",
 ];
 
-// List of allowed keywords
-const allowedKeywords = [
-  "Joy",
-  "Beauty",
-  "Relaxation",
-  "Sadness",
-  "Dreaminess",
-  "Scariness",
-  "Feeling Pumped Up"
-];
-
 export default function FindSongPage() {
-  // State for song inputs
   const [songName, setSongName] = useState("");
   const [songType, setSongType] = useState("");
   const [language, setLanguage] = useState("");
@@ -65,13 +54,14 @@ export default function FindSongPage() {
   const [topSongs, setTopSongs] = useState([]);
 
   const handleFindSong = () => {
-    // Filtering logic (currently random selection for top 3)
+    // Filtering logic
     const filteredSongs = songList.filter((song) =>
       (!songName || song.songName.toLowerCase().includes(songName.toLowerCase())) &&
       (!songType || song.songType === songType) &&
       (!language || song.language === language)
     );
-    // Randomly select top 3 matching songs
+
+    // Select top 3 matching songs
     const randomTopSongs = filteredSongs
       .sort(() => 0.5 - Math.random())
       .slice(0, 3);
@@ -82,6 +72,18 @@ export default function FindSongPage() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
 
+      {/* Navigation Bar */}
+      <AppBar position="static" sx={{ backgroundColor: '#1e1e1e' }}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            MusicApp
+          </Typography>
+          <Button color="inherit" href="/mainpage" sx={{ color: '#ff8c00' }}>
+            Back to Main Page
+          </Button>
+        </Toolbar>
+      </AppBar>
+
       <Box
         sx={{
           height: '100vh',
@@ -91,10 +93,9 @@ export default function FindSongPage() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          position: 'relative', // Set relative position for parent
         }}
       >
-        {/* Find Song Input Form and Title in the same box */}
+        {/* Find Song Input Form */}
         <Box
           sx={{
             display: 'flex',
@@ -108,32 +109,31 @@ export default function FindSongPage() {
           }}
         >
           {/* Title */}
-          <Typography variant="h5" gutterBottom style={{ color: "#fff" }}>
+          <Typography variant="h5" gutterBottom sx={{ color: "text.secondary" }}>
             Find Song
           </Typography>
 
           {/* Song Name Input */}
           <FormControl variant="outlined" fullWidth>
-            <InputLabel sx={{ color: '#fff' }} shrink>Song Name</InputLabel>
+            <InputLabel sx={{ color: 'text.secondary' }} shrink>Song Name</InputLabel>
             <TextField
               label="Song Name"
               variant="outlined"
               value={songName}
               onChange={(e) => setSongName(e.target.value)}
               fullWidth
-              InputLabelProps={{ shrink: true }}
-              InputProps={{ style: { color: '#fff', backgroundColor: '#555' } }} // Matches input background color from login
+              InputProps={{ style: { color: '#ffffff', backgroundColor: '#333' } }}
             />
           </FormControl>
 
           {/* Dropdown for Genre (Song Type) Selection */}
           <FormControl variant="outlined" fullWidth>
-            <InputLabel sx={{ color: '#fff' }} shrink>Song Type (Genre)</InputLabel>
+            <InputLabel sx={{ color: 'text.secondary' }} shrink>Song Type (Genre)</InputLabel>
             <Select
               value={songType}
               onChange={(e) => setSongType(e.target.value)}
-              sx={{ backgroundColor: '#555', color: '#fff' }}
-              label="Song Type (Genre)" // Link label to select
+              sx={{ backgroundColor: '#333', color: '#fff' }}
+              label="Song Type (Genre)"
             >
               {allowedGenres.map((genre) => (
                 <MenuItem key={genre} value={genre}>
@@ -145,12 +145,12 @@ export default function FindSongPage() {
 
           {/* Dropdown for Language Selection */}
           <FormControl variant="outlined" fullWidth>
-            <InputLabel sx={{ color: '#fff' }} shrink>Language</InputLabel>
+            <InputLabel sx={{ color: 'text.secondary' }} shrink>Language</InputLabel>
             <Select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              sx={{ backgroundColor: '#555', color: '#fff' }}
-              label="Language" // Link label to select
+              sx={{ backgroundColor: '#333', color: '#fff' }}
+              label="Language"
             >
               {allowedLanguages.map((lang) => (
                 <MenuItem key={lang} value={lang}>
@@ -162,10 +162,9 @@ export default function FindSongPage() {
           
           <Button
             variant="contained"
-            color="primary"
             onClick={handleFindSong}
             fullWidth
-            sx={{ backgroundColor: '#555', color: '#fff', '&:hover': { backgroundColor: '#777' } }}
+            sx={{ backgroundColor: 'primary.main', color: '#ffffff' }}
           >
             Find Song
           </Button>
@@ -177,36 +176,23 @@ export default function FindSongPage() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ color: '#fff' }}>Song Name</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Song Type (Genre)</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>Language</TableCell>
+                  <TableCell sx={{ color: '#ff8c00' }}>Song Name</TableCell>
+                  <TableCell sx={{ color: '#ff8c00' }}>Song Type (Genre)</TableCell>
+                  <TableCell sx={{ color: '#ff8c00' }}>Language</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {topSongs.map((song, index) => (
                   <TableRow key={index}>
-                    <TableCell sx={{ color: '#fff' }}>{song.songName}</TableCell>
-                    <TableCell sx={{ color: '#fff' }}>{song.songType}</TableCell>
-                    <TableCell sx={{ color: '#fff' }}>{song.language}</TableCell>
+                    <TableCell sx={{ color: '#ffffff' }}>{song.songName}</TableCell>
+                    <TableCell sx={{ color: '#ffffff' }}>{song.songType}</TableCell>
+                    <TableCell sx={{ color: '#ffffff' }}>{song.language}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         )}
-
-        {/* Logo at the bottom right */}
-        <img
-          src={Musiclogo}
-          alt="Musiclogo"
-          style={{
-            position: "absolute",
-            bottom: "30px", // Distance from the bottom
-            right: "30px", // Distance from the right
-            width: "150px", // Adjust the size as needed
-            zIndex: 1, // Ensure it is above other content
-          }}
-        />
       </Box>
     </ThemeProvider>
   );

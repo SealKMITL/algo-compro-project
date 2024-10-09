@@ -1,19 +1,20 @@
-import { Box, Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, createTheme, ThemeProvider, CssBaseline, FormControl } from "@mui/material";
+import { Box, Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, createTheme, ThemeProvider, CssBaseline, FormControl, AppBar, Toolbar } from "@mui/material";
 import React, { useState } from "react";
 
-// Import the logo
-const Musiclogo = "https://qwestore.com/png_images_min/10/Download-Free-Graphic-Resources-for-bMusic-5482.png";
-
-// Dark theme like DarkModePage
+// Dark theme with black and orange
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: "#bbbbbb", // Light grey background like in the login page
-      paper: "#3f3f3f",   // Dark grey box color like in the login page
+      default: "#000000", // Black background
+      paper: "#1e1e1e",   // Dark grey box color for containers
+    },
+    primary: {
+      main: '#ff8c00', // Orange for primary accents (buttons, labels)
     },
     text: {
-      primary: "#ffffff",  
+      primary: "#ffffff",  // White text
+      secondary: "#ff8c00", // Orange text for emphasis
     },
   },
 });
@@ -33,6 +34,11 @@ export default function RemoveSongPage() {
     }
 
     const filteredSongs = songList.filter((song) => song.songName !== songNameToRemove);
+    if (filteredSongs.length === songList.length) {
+      setErrorMessage("Song not found.");
+      return;
+    }
+
     setSongList(filteredSongs);
     setSongNameToRemove("");
     setErrorMessage("");
@@ -41,6 +47,18 @@ export default function RemoveSongPage() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+
+      {/* Navigation Bar */}
+      <AppBar position="static" sx={{ backgroundColor: '#1e1e1e' }}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            MusicApp
+          </Typography>
+          <Button color="inherit" href="/mainpage" sx={{ color: '#ff8c00' }}>
+            Back to Main Page
+          </Button>
+        </Toolbar>
+      </AppBar>
 
       <Box
         sx={{
@@ -68,7 +86,7 @@ export default function RemoveSongPage() {
           }}
         >
           {/* Title */}
-          <Typography variant="h5" gutterBottom style={{ color: "#fff" }}>
+          <Typography variant="h5" gutterBottom sx={{ color: "text.secondary" }}>
             Remove Song
           </Typography>
 
@@ -87,16 +105,15 @@ export default function RemoveSongPage() {
               onChange={(e) => setSongNameToRemove(e.target.value)}
               fullWidth
               InputLabelProps={{ shrink: true }}
-              InputProps={{ style: { color: '#fff', backgroundColor: '#555' } }} // Matches input background color from login
+              InputProps={{ style: { color: '#fff', backgroundColor: '#333' } }} // Matches input background color
             />
           </FormControl>
 
           <Button
             variant="contained"
-            color="primary"
             onClick={handleRemoveSong}
             fullWidth
-            sx={{ backgroundColor: '#555', color: '#fff', '&:hover': { backgroundColor: '#777' } }}
+            sx={{ backgroundColor: 'primary.main', color: '#fff', '&:hover': { backgroundColor: '#ff9c33' } }}
           >
             Remove Song
           </Button>
@@ -107,35 +124,22 @@ export default function RemoveSongPage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ color: '#fff' }}>Song Name</TableCell>
-                <TableCell sx={{ color: '#fff' }}>Song Type (Genre)</TableCell>
-                <TableCell sx={{ color: '#fff' }}>Language</TableCell>
+                <TableCell sx={{ color: '#ff8c00' }}>Song Name</TableCell>
+                <TableCell sx={{ color: '#ff8c00' }}>Song Type (Genre)</TableCell>
+                <TableCell sx={{ color: '#ff8c00' }}>Language</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {songList.map((song, index) => (
                 <TableRow key={index}>
-                  <TableCell sx={{ color: '#fff' }}>{song.songName}</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>{song.songType}</TableCell>
-                  <TableCell sx={{ color: '#fff' }}>{song.language}</TableCell>
+                  <TableCell sx={{ color: '#ffffff' }}>{song.songName}</TableCell>
+                  <TableCell sx={{ color: '#ffffff' }}>{song.songType}</TableCell>
+                  <TableCell sx={{ color: '#ffffff' }}>{song.language}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
-
-        {/* Logo at the bottom right */}
-        <img
-          src={Musiclogo}
-          alt="Musiclogo"
-          style={{
-            position: "absolute",
-            bottom: "30px", // Distance from the bottom
-            right: "30px", // Distance from the right
-            width: "150px", // Adjust the size as needed
-            zIndex: 1, // Ensure it is above other content
-          }}
-        />
       </Box>
     </ThemeProvider>
   );
